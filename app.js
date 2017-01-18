@@ -2,7 +2,7 @@ $(document).ready(function(){
 
 /* ------- classe Chrono ------- */
 var counter, counter2, counter3;
-
+var buzzer = $("#buzzer")[0];
 
 function Chrono(currentTime, boucleCounter) {
     this.time = currentTime;
@@ -40,6 +40,9 @@ var breakLong = new Chrono(10, 0)
 /* ------- Bouttons ------- */
 $("#pause").hide();
 $("#reset").hide();
+$("#breaktime").hide();
+$("#megabreak").hide();
+
 
 $("#start").click(function(){
     Chronometre.start();
@@ -60,18 +63,29 @@ $("#stop").click(function(){
     $("#stop").show();
     $("#pause").hide();
     $("#start").show();
+    $("#megabreak").hide();
+    $("#sessiontitle").show();
+
 })
 $("#reset").click(function(){
     $("#reset").hide();
     $("#start").show();
-    $("#stop").show();
+    $("#stop").hide();
+    $("#sessiontitle").show();
+    $("#megabreak").hide();
+    Chronometre.boucle = 0
+    breakTime.boucle = 0
     breakLong.stop();
     breakLong.stopLong();
+
 
 })
 
 /* ------ timer -------- */
 function timer(){
+    $("#sessiontitle").show();
+    $("#breaktime").hide();
+
     console.log("timer = " + Chronometre.time)
     Chronometre.time -=1
     var minute = Math.floor((Chronometre.time)/60);
@@ -83,6 +97,7 @@ function timer(){
             minute = "0" + minute;
         }
         if (Chronometre.time <= 0) {
+			buzzer.play();
             Chronometre.boucle += 1
             console.log("Chronometre boucle = " + Chronometre.boucle);
             Chronometre.startBreak();
@@ -100,6 +115,8 @@ function timer(){
 /* ------- break ------ */
 function breakChrono(){
     $("#pause").hide();
+    $("#sessiontitle").hide();
+    $("#breaktime").show();
     console.log("break = " + breakTime.time)
     breakTime.time -=1;
     var minute = Math.floor(breakTime.time/60);
@@ -111,11 +128,11 @@ function breakChrono(){
             minute = "0" + minute;
         }
         if (breakTime.time <= 0) {
+			buzzer.play();
             $("#pause").show();
             breakTime.time = 6
             Chronometre.time = 5
             breakTime.boucle += 1
-            $("#timer").html(minute + ":" + seconds);  
             console.log("breakTime boucle = " + breakTime.boucle);
             Chronometre.start();
         }
@@ -124,6 +141,10 @@ function breakChrono(){
 
 /* ----- longBreak ----- */
 function longBreak(){
+    $("#breaktime").hide();
+    $("#megabreak").show();
+    $("#stop").hide();
+    $("#reset").show();
     breakLong.time -= 1;
     var minute = Math.floor(breakLong.time/60);
     var seconds = breakLong.time - (minute*60);
@@ -163,7 +184,6 @@ function stopLongBreak(){
     clearInterval(counter3);
     $("#timer").html("25:00");
     $("#pause").hide();
-    // $("#play").show();
     $("#stop").show();
     $("#reset").hide();
 }
