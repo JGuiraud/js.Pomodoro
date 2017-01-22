@@ -33,9 +33,9 @@ function Chrono(currentTime, boucleCounter) {
     }
 }
 
-var Chronometre = new Chrono(5, 0);
-var breakTime = new Chrono(6, 0);
-var breakLong = new Chrono(10, 0)
+var Chronometre = new Chrono(1501, 0);
+var breakTime = new Chrono(301, 0);
+var breakLong = new Chrono(901, 0)
 
 /* ------- Bouttons ------- */
 $("#pause").hide();
@@ -101,7 +101,7 @@ function timer(){
             Chronometre.boucle += 1
             console.log("Chronometre boucle = " + Chronometre.boucle);
             Chronometre.startBreak();
-            Chronometre.time = 5
+            Chronometre.time = 1500
                 if (breakTime.boucle === 3 && Chronometre.boucle === 4){
                 Chronometre.stop();
                 counter3 = setInterval(longBreak, 1000);
@@ -130,8 +130,8 @@ function breakChrono(){
         if (breakTime.time <= 0) {
 			buzzer.play();
             $("#pause").show();
-            breakTime.time = 6
-            Chronometre.time = 5
+            breakTime.time = 1501
+            Chronometre.time = 301
             breakTime.boucle += 1
             console.log("breakTime boucle = " + breakTime.boucle);
             Chronometre.start();
@@ -173,9 +173,9 @@ function pause (){
 function stop(){
     clearInterval(counter);
     clearInterval(counter2);
-    Chronometre.time = 5;
-    breakTime.time = 7;
-    breakLong.time = 9;
+    Chronometre.time = 1501;
+    breakTime.time = 301;
+    breakLong.time = 901;
     $("#timer").html("25:00");
 }
 
